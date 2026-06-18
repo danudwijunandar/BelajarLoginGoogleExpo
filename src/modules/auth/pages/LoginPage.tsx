@@ -1,24 +1,25 @@
-import { STORAGE_KEYS } from "@/constants/storage.contants";
 import { useAuthStore } from "@/store/auth.store";
-import { storage } from "@/utils/storage";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AuthService } from "../services/auth.service";
+import { saveUser } from "../services/user.service";
 
 export default function LoginPage() {
   const login = useAuthStore((state) => state.login);
   const router = useRouter();
 
   const handleLogin = async () => {
-    const user = {
-      uid: "1",
-      name: "Danu",
-      email: "danu@mail.com",
-    };
+    const firebaseUser = await AuthService.login();
 
-    login(user);
+    await saveUser(firebaseUser);
 
-    await storage.setItem(STORAGE_KEYS.USER, user);
+    login({
+      uid: firebaseUser.uid,
+      displayName: firebaseUser.displayName ?? "",
+      email: firebaseUser.email ?? "",
+      photoURL: firebaseUser.photoURL ?? "",
+    });
 
     router.replace("/(tabs)/home");
   };

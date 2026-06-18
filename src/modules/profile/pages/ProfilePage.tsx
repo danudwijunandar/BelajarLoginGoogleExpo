@@ -1,15 +1,17 @@
-import { router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-
+import { STORAGE_KEYS } from "@/constants/storage.contants";
 import { useAuthStore } from "@/store/auth.store";
+import { storage } from "@/utils/storage";
+import { router } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfilePage() {
   const logout = useAuthStore((state) => state.logout);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     logout();
+
+    await storage.removeItem(STORAGE_KEYS.USER);
 
     router.replace("/login");
   };

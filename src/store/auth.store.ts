@@ -1,36 +1,47 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { create } from "zustand";
 
-import { User } from "@/modules/auth/types/auth.types";
+import { AuthState, UserModel } from "@/modules/auth/types/auth.types";
 
-interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-
-  login: (user: User) => void;
-  logout: () => void;
-  setUser: (user: User | null) => void;
-}
+const USER_KEY = "auth_user";
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
 
   isAuthenticated: false,
 
-  login: (user) =>
+  isLoading: false,
+
+  login: async (user: UserModel) => {
+    await AsyncStorage.setItem(
+      USER_KEY,
+
+      JSON.stringify(user),
+    );
+
     set({
       user,
-      isAuthenticated: true,
-    }),
 
-  logout: () =>
+      isAuthenticated: true,
+    });
+  },
+
+  logout: async () => {
+    await AsyncStorage.removeItem(USER_KEY);
+
     set({
       user: null,
-      isAuthenticated: false,
-    }),
 
-  setUser: (user) =>
+      isAuthenticated: false,
+    });
+  },
+
+  setLoading: (loading) => {
     set({
-      user,
-      isAuthenticated: !!user,
-    }),
+      isLoading: loading,
+    });
+  },
 }));
+
+export default useAuthStore;

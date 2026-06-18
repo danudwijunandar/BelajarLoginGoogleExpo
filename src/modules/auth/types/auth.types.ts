@@ -1,6 +1,23 @@
-export interface User {
+export interface UserModel {
   uid: string;
-  name: string;
+
   email: string;
-  photoURL?: string;
+
+  displayName: string;
+
+  photoURL: string;
+}
+
+export interface AuthState {
+  user: UserModel | null;
+
+  isAuthenticated: boolean;
+
+  isLoading: boolean;
+
+  login: (user: UserModel) => void;
+
+  logout: () => void;
+
+  setLoading: (loading: boolean) => void;
 }

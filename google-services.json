@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1050137852694",
+    "project_id": "tynu-music",
+    "storage_bucket": "tynu-music.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050137852694:android:03b8c9dee276475cde2e37",
+        "android_client_info": {
+          "package_name": "com.danu.belajarlogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1050137852694-1r94n5n0n46ilnml6kq1df41fi77cel0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.danu.belajarlogin",
+            "certificate_hash": "87338698642b7ae42690b7ae8da3891366f79b92"
+          }
+        },
+        {
+          "client_id": "1050137852694-mm70t4ihno0ohde7t7njv6fe4b3htjsq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwEJzt3QhFOxQOORsEx79mWpRMZFzI5QE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1050137852694-mm70t4ihno0ohde7t7njv6fe4b3htjsq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,15 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
+
+import { useAuthGuard } from "@/modules/auth/hooks/useAuthGuard";
 
 export default function TabsLayout() {
+  const { isAuthenticated } = useAuthGuard();
+
+  if (!isAuthenticated) {
+    return <Redirect href="/login" />;
+  }
+
   return (
     <Tabs
       screenOptions={{
@@ -12,8 +20,9 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: "Home",
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="home" size={size} color={color} />
+
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" color={color} size={size} />
           ),
         }}
       />
@@ -22,8 +31,9 @@ export default function TabsLayout() {
         name="search"
         options={{
           title: "Search",
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="search" size={size} color={color} />
+
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search" color={color} size={size} />
           ),
         }}
       />
@@ -32,8 +42,9 @@ export default function TabsLayout() {
         name="library"
         options={{
           title: "Library",
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="library" size={size} color={color} />
+
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="library" color={color} size={size} />
           ),
         }}
       />
@@ -42,8 +53,9 @@ export default function TabsLayout() {
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="person" size={size} color={color} />
+
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
           ),
         }}
       />
