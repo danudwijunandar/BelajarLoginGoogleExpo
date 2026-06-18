@@ -1,26 +1,31 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Redirect, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 
-import { useAuthGuard } from "@/modules/auth/hooks/useAuthGuard";
+import Colors from "@/theme/colors";
 
 export default function TabsLayout() {
-  const { isAuthenticated } = useAuthGuard();
-
-  if (!isAuthenticated) {
-    return <Redirect href="/login" />;
-  }
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+
+        tabBarStyle: {
+          backgroundColor: Colors.card,
+          borderTopColor: Colors.border,
+          borderTopWidth: 1,
+          height: 65,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
+
+        tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: Colors.textSecondary,
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
           title: "Home",
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />
           ),
@@ -28,12 +33,11 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="search"
+        name="explore"
         options={{
-          title: "Search",
-
+          title: "Explore",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" color={color} size={size} />
+            <Ionicons name="compass" color={color} size={size} />
           ),
         }}
       />
@@ -42,7 +46,6 @@ export default function TabsLayout() {
         name="library"
         options={{
           title: "Library",
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="library" color={color} size={size} />
           ),
@@ -53,10 +56,15 @@ export default function TabsLayout() {
         name="profile"
         options={{
           title: "Profile",
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
     GoogleAuthProvider,
@@ -8,6 +9,8 @@ import { doc, setDoc } from "firebase/firestore";
 
 import { auth, db } from "@/config/firebase";
 import useAuthStore from "@/store/auth.store";
+
+const USER_KEY = "auth_user";
 
 GoogleSignin.configure({
   webClientId:
@@ -20,6 +23,8 @@ class GoogleAuthService {
   async signIn() {
     try {
       await GoogleSignin.hasPlayServices();
+
+      await GoogleSignin.signOut().catch(() => {});
 
       const response = await GoogleSignin.signIn();
 
@@ -47,19 +52,21 @@ class GoogleAuthService {
         merge: true,
       });
 
+      await AsyncStorage.setItem(USER_KEY, JSON.stringify(userModel));
+
       await useAuthStore.getState().login(userModel);
 
       return userModel;
     } catch (error) {
-      console.log(error);
+      console.log("[LOGIN ERROR]", error);
       throw error;
     }
   }
 
   async signOut() {
-    await GoogleSignin.signOut();
-
     await signOut(auth);
+
+    await GoogleSignin.signOut();
 
     await useAuthStore.getState().logout();
   }

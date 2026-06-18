@@ -2,10 +2,10 @@ import GoogleAuthService from "./googleAuth.service";
 
 export class AuthService {
   static async login() {
-    return await GoogleAuthService.signIn();
+    return GoogleAuthService.signIn();
   }
 
   static async logout() {
-    return await GoogleAuthService.signOut();
+    return GoogleAuthService.signOut();
   }
 }

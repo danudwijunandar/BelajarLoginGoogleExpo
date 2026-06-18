@@ -1,7 +1,8 @@
 import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
-import { getStoredUser } from "@/modules/auth/services/authBootstrap.service";
+import { bootstrapAuth } from "@/modules/auth/services/authBootstrap.service";
 import { useAuthStore } from "@/store/auth.store";
 
 export default function Index() {
@@ -10,26 +11,34 @@ export default function Index() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
-    async function bootstrap() {
-      const user = await getStoredUser();
-
-      if (user) {
-        useAuthStore.getState().setUser(user);
+    async function init() {
+      try {
+        await bootstrapAuth();
+      } catch (error) {
+        console.log("Bootstrap Error:", error);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     }
 
-    bootstrap();
+    init();
   }, []);
 
   if (loading) {
-    return null;
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
-  if (isAuthenticated) {
-    return <Redirect href="/(tabs)/home" />;
-  }
-
-  return <Redirect href="/login" />;
+  return <Redirect href={isAuthenticated ? "/(tabs)/home" : "/login"} />;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

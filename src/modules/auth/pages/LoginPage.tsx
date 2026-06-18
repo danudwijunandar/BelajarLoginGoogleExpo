@@ -1,27 +1,23 @@
-import { useAuthStore } from "@/store/auth.store";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { AuthService } from "../services/auth.service";
 import { saveUser } from "../services/user.service";
 
 export default function LoginPage() {
-  const login = useAuthStore((state) => state.login);
   const router = useRouter();
 
   const handleLogin = async () => {
-    const firebaseUser = await AuthService.login();
+    try {
+      const firebaseUser = await AuthService.login();
 
-    await saveUser(firebaseUser);
+      await saveUser(firebaseUser);
 
-    login({
-      uid: firebaseUser.uid,
-      displayName: firebaseUser.displayName ?? "",
-      email: firebaseUser.email ?? "",
-      photoURL: firebaseUser.photoURL ?? "",
-    });
-
-    router.replace("/(tabs)/home");
+      router.replace("/(tabs)/home");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

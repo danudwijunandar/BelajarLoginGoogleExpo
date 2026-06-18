@@ -1,20 +1,41 @@
-import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+
+import MusicCard from "@/components/MusicCard/MusicCard";
+import Screen from "@/components/Screen/Screen";
+import SectionTitle from "@/components/SectionTitle/SectionTitle";
+
+import { albums } from "@/data/albums";
 
 import { useAuthStore } from "@/store/auth.store";
+import Colors from "@/theme/colors";
 
 export default function HomePage() {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>🏠 Home</Text>
+    <Screen>
+      <View style={styles.container}>
+        <Text style={styles.greeting}>Good Morning 👋</Text>
 
-      <View style={styles.card}>
-        <Text>Nama: {user?.name}</Text>
-        <Text>Email: {user?.email}</Text>
+        <Text style={styles.name}>{user?.displayName}</Text>
+
+        <SectionTitle title="Recently Played" />
+
+        <FlatList
+          horizontal
+          data={albums}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <MusicCard
+              image={item.image}
+              title={item.title}
+              subtitle={item.artist}
+            />
+          )}
+        />
       </View>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
@@ -24,15 +45,15 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  title: {
-    fontSize: 24,
-    fontWeight: "700",
-    marginBottom: 20,
+  greeting: {
+    color: Colors.textSecondary,
+    fontSize: 18,
   },
 
-  card: {
-    padding: 16,
-    borderRadius: 12,
-    backgroundColor: "#f3f3f3",
+  name: {
+    color: Colors.text,
+    fontSize: 28,
+    fontWeight: "700",
+    marginBottom: 30,
   },
 });
