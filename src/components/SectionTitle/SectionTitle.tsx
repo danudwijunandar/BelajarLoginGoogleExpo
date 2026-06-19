@@ -1,21 +1,28 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import Colors from "@/theme/colors";
-import Typography from "@/theme/typography";
 
 type Props = {
   title: string;
 };
 
 export default function SectionTitle({ title }: Props) {
-  return <Text style={styles.title}>{title}</Text>;
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 18,
+  },
+
   title: {
     color: Colors.text,
-    fontSize: Typography.h2,
-    fontWeight: "700",
-    marginBottom: 20,
+    fontSize: 24,
+    fontWeight: "800",
+    letterSpacing: 0.3,
   },
 });

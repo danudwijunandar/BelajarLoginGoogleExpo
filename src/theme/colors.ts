@@ -1,15 +1,15 @@
 export const Colors = {
-  primary: "#222fbc",
+  primary: "#6366F1",
 
-  background: "#0F172A",
+  background: "#020617",
 
-  card: "#1E293B",
+  card: "#0F172A",
 
   text: "#FFFFFF",
 
   textSecondary: "#94A3B8",
 
-  border: "#334155",
+  border: "#1E293B",
 
   success: "#22C55E",
 

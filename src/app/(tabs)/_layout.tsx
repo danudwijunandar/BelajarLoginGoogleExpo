@@ -9,25 +9,38 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
 
+        tabBarShowLabel: false,
+
         tabBarStyle: {
+          position: "absolute",
+
+          left: 20,
+          right: 20,
+          bottom: 12,
+
+          height: 60,
+
+          borderRadius: 20,
+
           backgroundColor: Colors.card,
-          borderTopColor: Colors.border,
-          borderTopWidth: 1,
-          height: 65,
-          paddingBottom: 8,
-          paddingTop: 8,
+
+          borderTopWidth: 0,
         },
 
         tabBarActiveTintColor: Colors.primary,
+
         tabBarInactiveTintColor: Colors.textSecondary,
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              color={color}
+              size={focused ? 30 : 26}
+            />
           ),
         }}
       />
@@ -35,9 +48,12 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="compass" color={color} size={size} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "compass" : "compass-outline"}
+              color={color}
+              size={focused ? 30 : 26}
+            />
           ),
         }}
       />
@@ -45,9 +61,12 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="library"
         options={{
-          title: "Library",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="library" color={color} size={size} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "library" : "library-outline"}
+              color={color}
+              size={focused ? 30 : 26}
+            />
           ),
         }}
       />
@@ -55,9 +74,12 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" color={color} size={size} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              color={color}
+              size={focused ? 30 : 26}
+            />
           ),
         }}
       />

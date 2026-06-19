@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import Colors from "@/theme/colors";
 
@@ -10,15 +10,19 @@ type Props = {
 
 export default function MusicListItem({ image, title, artist }: Props) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity activeOpacity={0.9} style={styles.container}>
       <Image source={{ uri: image }} style={styles.image} />
 
       <View style={styles.info}>
-        <Text style={styles.title}>{title}</Text>
+        <Text numberOfLines={1} style={styles.title}>
+          {title}
+        </Text>
 
-        <Text style={styles.artist}>{artist}</Text>
+        <Text numberOfLines={1} style={styles.artist}>
+          {artist}
+        </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -26,28 +30,35 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 18,
+
+    backgroundColor: "rgba(255,255,255,0.04)",
+
+    padding: 12,
+    borderRadius: 18,
+
+    marginBottom: 14,
   },
 
   image: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
+    width: 72,
+    height: 72,
+    borderRadius: 18,
   },
 
   info: {
-    marginLeft: 14,
     flex: 1,
+    marginLeft: 14,
   },
 
   title: {
     color: Colors.text,
-    fontWeight: "700",
     fontSize: 16,
+    fontWeight: "700",
   },
 
   artist: {
     color: Colors.textSecondary,
-    marginTop: 5,
+    marginTop: 6,
+    fontSize: 13,
   },
 });

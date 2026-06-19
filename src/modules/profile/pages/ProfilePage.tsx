@@ -5,11 +5,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+import Screen from "@/components/Screen/Screen";
 
 import { AuthService } from "@/modules/auth/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
+import Colors from "@/theme/colors";
 
 import ProfileHeader from "../components/ProfileHeader";
 import ProfileMenuItem from "../components/ProfileMenuItem";
@@ -20,9 +23,9 @@ export default function ProfilePage() {
   const user = useAuthStore((state) => state.user);
 
   const handleLogout = () => {
-    Alert.alert("Logout", "Yakin ingin keluar?", [
+    Alert.alert("Logout", "Are you sure you want to logout?", [
       {
-        text: "Batal",
+        text: "Cancel",
         style: "cancel",
       },
       {
@@ -38,17 +41,46 @@ export default function ProfilePage() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <Screen>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
+      >
         <ProfileHeader
           name={user?.displayName ?? ""}
           email={user?.email ?? ""}
           photoURL={user?.photoURL ?? ""}
         />
 
+        <View style={styles.statsContainer}>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>54</Text>
+
+            <Text style={styles.statLabel}>Favorites</Text>
+          </View>
+
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>12</Text>
+
+            <Text style={styles.statLabel}>Playlists</Text>
+          </View>
+
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>128</Text>
+
+            <Text style={styles.statLabel}>Played</Text>
+          </View>
+        </View>
+
+        <Text style={styles.sectionTitle}>Account</Text>
+
         <ProfileMenuItem icon="👤" title="Edit Profile" />
 
         <ProfileMenuItem icon="❤️" title="Favorite Songs" />
+
+        <ProfileMenuItem icon="🎵" title="My Playlists" />
+
+        <Text style={styles.sectionTitle}>Preferences</Text>
 
         <ProfileMenuItem
           icon="⚙️"
@@ -56,33 +88,94 @@ export default function ProfilePage() {
           onPress={() => router.push("/settings")}
         />
 
-        <ProfileMenuItem icon="❓" title="Help" />
+        <ProfileMenuItem icon="🔔" title="Notifications" />
+
+        <Text style={styles.sectionTitle}>Support</Text>
+
+        <ProfileMenuItem icon="❓" title="Help Center" />
+
+        <ProfileMenuItem icon="📄" title="Terms & Privacy" />
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
+    paddingBottom: 80,
+  },
+
+  statsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+
+    marginBottom: 30,
+  },
+
+  statCard: {
     flex: 1,
-    padding: 20,
+
+    backgroundColor: Colors.card,
+
+    borderRadius: 20,
+
+    alignItems: "center",
+
+    paddingVertical: 20,
+
+    marginHorizontal: 4,
+  },
+
+  statValue: {
+    color: Colors.text,
+
+    fontSize: 24,
+
+    fontWeight: "800",
+  },
+
+  statLabel: {
+    color: Colors.textSecondary,
+
+    marginTop: 6,
+
+    fontSize: 12,
+  },
+
+  sectionTitle: {
+    color: Colors.text,
+
+    fontSize: 20,
+
+    fontWeight: "800",
+
+    marginBottom: 14,
+
+    marginTop: 12,
   },
 
   logoutButton: {
-    backgroundColor: "#ef4444",
     marginTop: 30,
-    padding: 18,
+
+    backgroundColor: Colors.danger,
+
+    height: 58,
+
     borderRadius: 18,
+
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   logoutText: {
-    color: "white",
-    fontSize: 17,
+    color: "#FFFFFF",
+
     fontWeight: "700",
-    textAlign: "center",
+
+    fontSize: 16,
   },
 });

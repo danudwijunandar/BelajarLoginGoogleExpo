@@ -8,12 +8,17 @@ type Props = {
 };
 
 export default function Screen({ children }: Props) {
-  return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
+  return (
+    <SafeAreaView edges={["top"]} style={styles.container}>
+      {children}
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+    paddingHorizontal: 20,
   },
 });

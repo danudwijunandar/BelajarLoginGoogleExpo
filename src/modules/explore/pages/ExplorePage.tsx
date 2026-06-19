@@ -1,158 +1,210 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useState } from "react";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+import Screen from "@/components/Screen/Screen";
+import Colors from "@/theme/colors";
+
+import { YoutubeService } from "@/modules/explore/services/youtube.service";
 
 export default function ExplorePage() {
+  const [query, setQuery] = useState("");
+
+  const [results, setResults] = useState<any[]>([]);
+
+  const [selectedSong, setSelectedSong] = useState<any>(null);
+
+  const handleSearch = async () => {
+    if (!query.trim()) return;
+
+    const data = await YoutubeService.searchMusic(query);
+
+    setResults(data);
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Explore</Text>
+    <Screen>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Explore</Text>
+
+          <TouchableOpacity style={styles.settingButton}>
+            <Text style={styles.settingIcon}>⚙️</Text>
+          </TouchableOpacity>
+        </View>
 
         <TextInput
-          placeholder="Cari lagu, artis..."
-          placeholderTextColor="#888"
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Search songs, artists..."
+          placeholderTextColor="#64748B"
           style={styles.search}
+          returnKeyType="search"
+          onSubmitEditing={handleSearch}
         />
 
-        <View style={styles.banner}>
-          <Text style={styles.bannerTitle}>🎵 Discover Weekly</Text>
+        {selectedSong && (
+          <View style={styles.player}>
+            <Image
+              source={{
+                uri: selectedSong.snippet.thumbnails.high.url,
+              }}
+              style={styles.playerImage}
+            />
 
-          <Text style={styles.bannerSubtitle}>
-            Temukan musik favoritmu setiap minggu
-          </Text>
-        </View>
+            <View style={styles.playerInfo}>
+              <Text numberOfLines={2} style={styles.playerTitle}>
+                {selectedSong.snippet.title}
+              </Text>
 
-        <Text style={styles.section}>Genre</Text>
-
-        <View style={styles.genreContainer}>
-          <View style={styles.genre}>
-            <Text style={styles.genreText}>Pop</Text>
-          </View>
-
-          <View style={styles.genre}>
-            <Text style={styles.genreText}>Rock</Text>
-          </View>
-
-          <View style={styles.genre}>
-            <Text style={styles.genreText}>Jazz</Text>
-          </View>
-
-          <View style={styles.genre}>
-            <Text style={styles.genreText}>HipHop</Text>
-          </View>
-
-          <View style={styles.genre}>
-            <Text style={styles.genreText}>K-Pop</Text>
-          </View>
-
-          <View style={styles.genre}>
-            <Text style={styles.genreText}>Indie</Text>
-          </View>
-        </View>
-
-        <Text style={styles.section}>Trending</Text>
-
-        {[1, 2, 3, 4].map((item) => (
-          <View key={item} style={styles.card}>
-            <View style={styles.cover} />
-
-            <View style={{ flex: 1 }}>
-              <Text style={styles.song}>Song {item}</Text>
-
-              <Text style={styles.artist}>Unknown Artist</Text>
+              <Text style={styles.playerArtist}>
+                {selectedSong.snippet.channelTitle}
+              </Text>
             </View>
           </View>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+        )}
+
+        <FlatList
+          data={results}
+          keyExtractor={(item) => item.id.videoId}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => setSelectedSong(item)}
+            >
+              <Image
+                source={{
+                  uri: item.snippet.thumbnails.high.url,
+                }}
+                style={styles.thumbnail}
+              />
+
+              <View style={styles.info}>
+                <Text numberOfLines={2} style={styles.videoTitle}>
+                  {item.snippet.title}
+                </Text>
+
+                <Text numberOfLines={1} style={styles.channel}>
+                  {item.snippet.channelTitle}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 8,
+    paddingTop: 8,
+  },
+
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
   },
 
   title: {
+    color: Colors.text,
     fontSize: 32,
-    fontWeight: "700",
-    marginBottom: 20,
+    fontWeight: "800",
+  },
+
+  settingButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: Colors.card,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  settingIcon: {
+    fontSize: 24,
   },
 
   search: {
-    backgroundColor: "#2a2a2a",
-    borderRadius: 14,
-    paddingHorizontal: 16,
-    height: 52,
-    color: "white",
+    height: 58,
+    backgroundColor: Colors.card,
+    borderRadius: 22,
+    paddingHorizontal: 20,
+    color: Colors.text,
     marginBottom: 20,
   },
 
-  banner: {
-    backgroundColor: "#1DB954",
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 24,
-  },
-
-  bannerTitle: {
-    color: "white",
-    fontSize: 22,
-    fontWeight: "700",
-  },
-
-  bannerSubtitle: {
-    color: "white",
-    marginTop: 8,
-  },
-
-  section: {
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 14,
-  },
-
-  genreContainer: {
+  player: {
+    backgroundColor: Colors.card,
+    borderRadius: 24,
+    padding: 16,
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-    marginBottom: 28,
+    marginBottom: 20,
   },
 
-  genre: {
-    backgroundColor: "#262626",
-    borderRadius: 14,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+  playerImage: {
+    width: 90,
+    height: 90,
+    borderRadius: 18,
   },
 
-  genreText: {
-    color: "white",
-    fontWeight: "600",
+  playerInfo: {
+    flex: 1,
+    marginLeft: 14,
+    justifyContent: "center",
   },
 
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 18,
-  },
-
-  cover: {
-    width: 60,
-    height: 60,
-    borderRadius: 14,
-    backgroundColor: "#555",
-    marginRight: 16,
-  },
-
-  song: {
-    color: "white",
-    fontWeight: "700",
+  playerTitle: {
+    color: Colors.text,
+    fontWeight: "800",
     fontSize: 16,
   },
 
-  artist: {
-    color: "#999",
-    marginTop: 4,
+  playerArtist: {
+    color: Colors.textSecondary,
+    marginTop: 8,
+  },
+
+  card: {
+    backgroundColor: Colors.card,
+    borderRadius: 22,
+    overflow: "hidden",
+    flexDirection: "row",
+    marginBottom: 14,
+  },
+
+  thumbnail: {
+    width: 120,
+    height: 90,
+  },
+
+  info: {
+    flex: 1,
+    padding: 14,
+    justifyContent: "center",
+  },
+
+  videoTitle: {
+    color: Colors.text,
+    fontWeight: "700",
+    fontSize: 15,
+  },
+
+  channel: {
+    color: Colors.textSecondary,
+    marginTop: 8,
+    fontSize: 13,
   },
 });

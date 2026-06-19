@@ -1,50 +1,58 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import Colors from "@/theme/colors";
-import Radius from "@/theme/radius";
 
 type Props = {
   image: string;
   title: string;
   subtitle: string;
+  onPress?: () => void;
 };
 
-export default function MusicCard({ image, title, subtitle }: Props) {
+export default function MusicCard({ image, title, subtitle, onPress }: Props) {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={onPress}>
       <Image source={{ uri: image }} style={styles.image} />
 
-      <Text numberOfLines={1} style={styles.title}>
-        {title}
-      </Text>
+      <View style={styles.content}>
+        <Text numberOfLines={2} style={styles.title}>
+          {title}
+        </Text>
 
-      <Text numberOfLines={1} style={styles.subtitle}>
-        {subtitle}
-      </Text>
-    </View>
+        <Text numberOfLines={1} style={styles.subtitle}>
+          {subtitle}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    width: 160,
-    marginRight: 16,
+    width: 155,
+    marginRight: 14,
   },
 
   image: {
-    width: 160,
-    height: 160,
-    borderRadius: Radius.md,
+    width: 155,
+    height: 155,
+    borderRadius: 20,
+  },
+
+  content: {
+    marginTop: 10,
   },
 
   title: {
     color: Colors.text,
+    fontSize: 15,
     fontWeight: "700",
-    marginTop: 10,
+    lineHeight: 20,
   },
 
   subtitle: {
     color: Colors.textSecondary,
+    fontSize: 13,
     marginTop: 4,
   },
 });

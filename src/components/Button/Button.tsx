@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import Colors from "@/theme/colors";
-import Radius from "@/theme/radius";
 
 type Props = {
   title: string;
@@ -10,7 +9,11 @@ type Props = {
 
 export default function Button({ title, onPress }: Props) {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={styles.button}
+      onPress={onPress}
+    >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
@@ -18,15 +21,27 @@ export default function Button({ title, onPress }: Props) {
 
 const styles = StyleSheet.create({
   button: {
+    height: 58,
+    borderRadius: 18,
     backgroundColor: Colors.primary,
-    borderRadius: Radius.md,
-    padding: 16,
+
+    justifyContent: "center",
+    alignItems: "center",
+
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+
+    elevation: 8,
   },
 
   text: {
-    color: "white",
-    textAlign: "center",
-    fontWeight: "700",
+    color: "#FFF",
     fontSize: 16,
+    fontWeight: "700",
+    letterSpacing: 0.3,
   },
 });
