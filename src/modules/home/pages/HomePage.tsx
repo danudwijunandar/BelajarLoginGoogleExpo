@@ -101,29 +101,6 @@ export default function HomePage() {
         <View style={styles.spacing} />
 
         <SectionTitle title="Made For You" />
-
-        <FlatList
-          horizontal
-          data={albums}
-          keyExtractor={(item) => `made-${item.id}`}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContent}
-          renderItem={({ item }) => (
-            <MusicCard
-              image={item.image}
-              title={item.title}
-              subtitle={item.artist}
-              onPress={() =>
-                setTrack({
-                  id: item.id,
-                  title: item.title,
-                  artist: item.artist,
-                  image: item.image,
-                })
-              }
-            />
-          )}
-        />
       </ScrollView>
     </Screen>
   );

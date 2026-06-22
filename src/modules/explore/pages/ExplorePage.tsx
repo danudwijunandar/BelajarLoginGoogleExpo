@@ -10,9 +10,11 @@ import {
 } from "react-native";
 
 import Screen from "@/components/Screen/Screen";
+import { usePlayerStore } from "@/modules/player/store/player.store";
 import Colors from "@/theme/colors";
 
 import { YoutubeService } from "@/modules/explore/services/youtube.service";
+import PlayerService from "@/modules/player/services/player.service";
 
 export default function ExplorePage() {
   const [query, setQuery] = useState("");
@@ -20,6 +22,8 @@ export default function ExplorePage() {
   const [results, setResults] = useState<any[]>([]);
 
   const [selectedSong, setSelectedSong] = useState<any>(null);
+
+  const setTrack = usePlayerStore((state) => state.setTrack);
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -78,7 +82,19 @@ export default function ExplorePage() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}
-              onPress={() => setSelectedSong(item)}
+              onPress={() => {
+                const track = {
+                  id: item.id.videoId,
+                  title: item.snippet.title,
+                  artist: item.snippet.channelTitle,
+                  image: item.snippet.thumbnails.high.url,
+                  videoId: item.id.videoId,
+                };
+
+                setSelectedSong(item);
+
+                PlayerService.play(track);
+              }}
             >
               <Image
                 source={{

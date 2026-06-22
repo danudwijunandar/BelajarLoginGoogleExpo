@@ -3,7 +3,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import Colors from "@/theme/colors";
-
+import { router } from "expo-router";
+import PlayerService from "../services/player.service";
 import { usePlayerStore } from "../store/player.store";
 
 export default function MiniPlayer() {
@@ -12,7 +13,11 @@ export default function MiniPlayer() {
   if (!currentTrack) return null;
 
   return (
-    <TouchableOpacity activeOpacity={0.95} style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.95}
+      style={styles.container}
+      onPress={() => router.push("/video")}
+    >
       <Image
         source={{
           uri: currentTrack.image,
@@ -30,7 +35,7 @@ export default function MiniPlayer() {
         </Text>
       </View>
 
-      <TouchableOpacity onPress={() => (isPlaying ? pause() : play())}>
+      <TouchableOpacity onPress={() => PlayerService.toggle()}>
         <Ionicons name={isPlaying ? "pause" : "play"} size={28} color="white" />
       </TouchableOpacity>
     </TouchableOpacity>
