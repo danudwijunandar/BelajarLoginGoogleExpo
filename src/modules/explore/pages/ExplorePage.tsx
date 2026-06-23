@@ -14,7 +14,6 @@ import { usePlayerStore } from "@/modules/player/store/player.store";
 import Colors from "@/theme/colors";
 
 import { YoutubeService } from "@/modules/explore/services/youtube.service";
-import PlayerService from "@/modules/player/services/player.service";
 
 export default function ExplorePage() {
   const [query, setQuery] = useState("");
@@ -83,17 +82,21 @@ export default function ExplorePage() {
             <TouchableOpacity
               style={styles.card}
               onPress={() => {
-                const track = {
-                  id: item.id.videoId,
-                  title: item.snippet.title,
-                  artist: item.snippet.channelTitle,
-                  image: item.snippet.thumbnails.high.url,
-                  videoId: item.id.videoId,
-                };
+                const playlist = results.map((video) => ({
+                  id: video.id.videoId,
+                  title: video.snippet.title,
+                  artist: video.snippet.channelTitle,
+                  image: video.snippet.thumbnails.high.url,
+                  videoId: video.id.videoId,
+                }));
+
+                const index = playlist.findIndex(
+                  (track) => track.id === item.id.videoId,
+                );
 
                 setSelectedSong(item);
 
-                PlayerService.play(track);
+                usePlayerStore.getState().setPlaylist(playlist, index);
               }}
             >
               <Image
