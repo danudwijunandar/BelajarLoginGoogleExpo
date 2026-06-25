@@ -1,12 +1,12 @@
 import { useState } from "react";
 import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    FlatList,
+    Image,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 import Screen from "@/components/Screen/Screen";
@@ -88,6 +88,7 @@ export default function ExplorePage() {
                   artist: video.snippet.channelTitle,
                   image: video.snippet.thumbnails.high.url,
                   videoId: video.id.videoId,
+                  duration: video.duration,
                 }));
 
                 const index = playlist.findIndex(

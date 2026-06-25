@@ -3,6 +3,7 @@ import { create } from "zustand";
 
 interface PlayerStore extends PlayerState {
   setTrack: (track: Track) => void;
+  resetPlayer: () => void;
 
   setPlaylist: (tracks: Track[], index?: number) => void;
 
@@ -69,6 +70,33 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       buffered: 0,
       isLoading: true,
       isReady: false,
+    }),
+
+  resetPlayer: () =>
+    set({
+      currentTrack: null,
+
+      playlist: [],
+
+      currentIndex: 0,
+
+      isPlaying: false,
+
+      isLoading: false,
+
+      isReady: false,
+
+      duration: 0,
+
+      currentTime: 0,
+
+      buffered: 0,
+
+      repeat: false,
+
+      shuffle: false,
+
+      volume: 100,
     }),
 
   setPlaylist: (tracks, index = 0) =>

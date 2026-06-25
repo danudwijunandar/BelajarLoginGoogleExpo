@@ -106,7 +106,7 @@ export default function ProfilePage() {
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 80,
+    paddingBottom: 180,
   },
 
   statsContainer: {

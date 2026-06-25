@@ -28,7 +28,6 @@ export default function YoutubePlayerController() {
   }, [currentTrack]);
 
   if (!currentTrack) return null;
-
   return (
     <YoutubePlayer
       ref={playerRef}

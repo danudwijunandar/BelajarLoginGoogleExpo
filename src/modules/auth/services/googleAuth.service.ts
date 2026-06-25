@@ -1,13 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
-    GoogleAuthProvider,
-    signInWithCredential,
-    signOut,
+  GoogleAuthProvider,
+  signInWithCredential,
+  signOut,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 import { auth, db } from "@/config/firebase";
+import PlayerService from "@/modules/player/services/player.service";
 import useAuthStore from "@/store/auth.store";
 
 const USER_KEY = "auth_user";
@@ -69,6 +70,10 @@ class GoogleAuthService {
     await GoogleSignin.signOut();
 
     await useAuthStore.getState().logout();
+
+    await PlayerService.reset();
+
+    await PlayerService.stop();
   }
 }
 

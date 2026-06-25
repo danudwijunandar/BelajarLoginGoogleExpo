@@ -1,9 +1,8 @@
+import { bootstrapAuth } from "@/modules/auth/services/authBootstrap.service";
+import { useAuthStore } from "@/store/auth.store";
 import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-
-import { bootstrapAuth } from "@/modules/auth/services/authBootstrap.service";
-import { useAuthStore } from "@/store/auth.store";
 
 export default function Index() {
   const [loading, setLoading] = useState(true);

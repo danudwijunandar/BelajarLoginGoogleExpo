@@ -7,6 +7,9 @@ class PlayerService {
 
     store.setTrack(track);
   }
+  reset() {
+    usePlayerStore.getState().resetPlayer();
+  }
 
   playCurrent() {
     usePlayerStore.getState().play();
